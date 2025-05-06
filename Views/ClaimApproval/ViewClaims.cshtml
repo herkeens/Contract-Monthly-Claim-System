@@ -1,0 +1,104 @@
+﻿@model IEnumerable<CMCS_Auto.Models.Claim>
+@{
+    ViewData["Title"] = "View Claims";
+    var pendingClaims = ViewData["PendingClaims"] as IEnumerable<CMCS_Auto.Models.Claim>;
+    var historicalClaims = ViewData["HistoricalClaims"] as IEnumerable<CMCS_Auto.Models.Claim>;
+
+    // Retrieve the criteria from ViewData
+    var minHoursWorked = ViewData["MinHoursWorked"] as int?;
+    var minHourlyRate = ViewData["MinHourlyRate"] as decimal?;
+}
+
+<h2 class="mt-4">View Pending Claims</h2>
+
+<!-- Set Criteria for Auto-Approval -->
+<form asp-action="SetApprovalCriteria" method="post" class="mb-4">
+    <div class="form-row">
+        <div class="col-md-4">
+            <label>Minimum Hours Worked:</label>
+            <input type="number" name="minHoursWorked" class="form-control" min="0" required />
+        </div>
+        <div class="col-md-4">
+            <label>Minimum Hourly Rate:</label>
+            <input type="number" name="minHourlyRate" class="form-control" min="0" step="0.01" required />
+        </div>
+        <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-primary mt-3">Set Criteria</button>
+        </div>
+    </div>
+</form>
+
+@if (minHoursWorked.HasValue && minHourlyRate.HasValue)
+{
+    <div class="alert alert-info">
+        <strong>Current Criteria:</strong> Minimum Hours Worked: @minHoursWorked, Minimum Hourly Rate: @minHourlyRate
+    </div>
+
+    <!-- Approve All Matching Claims Button -->
+    <form asp-action="ApproveAllMatchingClaims" method="post" class="mb-4">
+        <button type="submit" class="btn btn-success">Approve All Matching Claims</button>
+    </form>
+}
+
+<table class="table table-hover mt-3">
+    <thead class="thead-light">
+        <tr>
+            <th>Lecturer ID</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Final Payment</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in pendingClaims)
+        {
+            <tr>
+                <td>@claim.LecturerID</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.FinalPayment</td>
+                <td>
+                    <!-- Approve button -->
+                    <form asp-action="ApproveClaim" method="post" style="display:inline;">
+                        <input type="hidden" name="claimID" value="@claim.ClaimID" />
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <!-- Reject button -->
+                    <form asp-action="RejectClaim" method="post" style="display:inline;">
+                        <input type="hidden" name="claimID" value="@claim.ClaimID" />
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2 class="mt-4">Claim History</h2>
+
+<table class="table table-striped mt-3">
+    <thead class="thead-dark">
+        <tr>
+            <th>Lecturer ID</th>
+            <th>Submission Date</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Final Payment</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in historicalClaims)
+        {
+            <tr>
+                <td>@claim.LecturerID</td>
+                <td>@claim.SubmissionDate.ToShortDateString()</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.FinalPayment</td>
+                <td>@claim.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

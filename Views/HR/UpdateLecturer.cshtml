@@ -1,0 +1,64 @@
+﻿@model CMCS_Auto.ViewModels.HRViewModel
+
+<h2>Update Lecturer Information</h2>
+
+<!-- Back to Approved Claims Report Button -->
+<div class="mb-3">
+    <a asp-action="ApprovedClaimsReport" asp-controller="HR" class="btn btn-secondary">Back to Approved Claims Report</a>
+</div>
+
+<!-- Form for Selected Lecturer -->
+@if (Model.SelectedLecturer != null)
+{
+    <form asp-action="UpdateLecturer" method="post">
+        <input type="hidden" asp-for="SelectedLecturer.UserID" />
+
+        <label asp-for="SelectedLecturer.FirstName">First Name</label>
+        <input asp-for="SelectedLecturer.FirstName" class="form-control" required />
+
+        <label asp-for="SelectedLecturer.LastName">Last Name</label>
+        <input asp-for="SelectedLecturer.LastName" class="form-control" required />
+
+        <label asp-for="SelectedLecturer.Email">Email</label>
+        <input asp-for="SelectedLecturer.Email" class="form-control" required />
+
+        <label asp-for="SelectedLecturer.ContactNumber">Contact Number</label>
+        <input asp-for="SelectedLecturer.ContactNumber" class="form-control" required />
+
+        <label asp-for="SelectedLecturer.NQFLevel">NQF Level</label>
+        <input asp-for="SelectedLecturer.NQFLevel" class="form-control" required />
+
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+    </form>
+}
+
+<!-- List of All Lecturers -->
+<h3 class="mt-5">All Lecturers</h3>
+<table class="table table-striped mt-3" id="lecturerTable">
+    <thead class="thead-dark">
+        <tr>
+            <th>Lecturer ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Contact Number</th>
+            <th>NQF Level</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lecturer in Model.Lecturers)
+        {
+            <tr>
+                <td>@lecturer.UserID</td>
+                <td>@lecturer.FirstName @lecturer.LastName</td>
+                <td>@lecturer.Email</td>
+                <td>@lecturer.ContactNumber</td>
+                <td>@lecturer.NQFLevel</td>
+                <td>
+                    <a asp-action="UpdateLecturer" asp-controller="HR" asp-route-userID="@lecturer.UserID" class="btn btn-primary btn-sm">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

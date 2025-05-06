@@ -1,0 +1,50 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="card mx-auto mt-5" style="max-width: 600px;">
+    <div class="card-body">
+        <h3 class="card-title text-center">Register</h3>
+        <form asp-action="Register" asp-controller="Account" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" required />
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" required />
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="ContactNumber">Contact Number</label>
+                    <input asp-for="ContactNumber" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="Role">Role</label>
+                <select asp-for="Role" class="form-control" required>
+                    <option value="Lecturer">Lecturer</option>
+                    <option value="Coordinator">Coordinator</option>
+                    <option value="AcademicManager">Academic Manager</option>
+                    <option value="HR">HR</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NQFLevel">NQF Level</label>
+                <input asp-for="NQFLevel" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+    </div>
+</div>

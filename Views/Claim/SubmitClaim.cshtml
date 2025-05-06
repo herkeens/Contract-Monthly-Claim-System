@@ -1,0 +1,52 @@
+﻿@model CMCS_Auto.Models.Claim
+@{
+    ViewData["Title"] = "Submit Claim";
+}
+
+<div class="card mx-auto mt-5" style="max-width: 500px;">
+    <div class="card-body">
+        <h3 class="card-title text-center">Submit Claim</h3>
+
+        <!-- Button to View Claim History -->
+        <div class="text-right mb-3">
+            <a asp-action="ViewClaims" asp-controller="Claim" class="btn btn-secondary">View Claim History</a>
+        </div>
+
+        <!-- Display model validation errors -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form asp-action="SubmitClaim" method="post">
+            <div class="form-group">
+                <label asp-for="HoursWorked">Hours Worked</label>
+                <input asp-for="HoursWorked" class="form-control" oninput="calculatePayment()" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="HourlyRate">Hourly Rate</label>
+                <input asp-for="HourlyRate" class="form-control" oninput="calculatePayment()" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="FinalPayment">Final Payment</label>
+                <input asp-for="FinalPayment" class="form-control" readonly />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function calculatePayment() {
+        var hours = parseFloat(document.querySelector('[name="HoursWorked"]').value) || 0;
+        var rate = parseFloat(document.querySelector('[name="HourlyRate"]').value) || 0;
+        document.querySelector('[name="FinalPayment"]').value = (hours * rate).toFixed(2);
+    }
+</script>

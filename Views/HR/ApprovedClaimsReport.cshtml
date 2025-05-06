@@ -1,0 +1,69 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Approved Claims Report";
+}
+
+<h2 class="mt-4">Approved Claims Report</h2>
+
+<!-- Filter Approved Claims by Date Range -->
+<form method="get" asp-action="ApprovedClaimsReport">
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <label>Start Date:</label>
+            <input type="date" name="startDate" class="form-control" value="@ViewBag.StartDate" />
+        </div>
+        <div class="col-md-3">
+            <label>End Date:</label>
+            <input type="date" name="endDate" class="form-control" value="@ViewBag.EndDate" />
+        </div>
+        <div class="col-md-3 align-self-end">
+            <button type="submit" class="btn btn-primary">Filter Claims</button>
+        </div>
+        <div class="col-md-3 align-self-end">
+            <a asp-action="DownloadApprovedClaimsCSV" asp-route-startDate="@ViewBag.StartDate" asp-route-endDate="@ViewBag.EndDate" class="btn btn-success">Download Data as CSV</a>
+        </div>
+    </div>
+</form>
+<div class="mb-3">
+    <a asp-action="UpdateLecturer" asp-controller="HR" class="btn btn-secondary">Manage Lecturers</a>
+</div>
+
+<!-- Summary Statistics -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <h5>Total Claims: @ViewBag.TotalClaims</h5>
+    </div>
+    <div class="col-md-3">
+        <h5>Approved Claims: @ViewBag.ApprovedClaims</h5>
+    </div>
+    <div class="col-md-3">
+        <h5>Pending Claims: @ViewBag.PendingClaims</h5>
+    </div>
+    <div class="col-md-3">
+        <h5>Rejected Claims: @ViewBag.RejectedClaims</h5>
+    </div>
+</div>
+
+<table class="table table-striped mt-3">
+    <thead class="thead-dark">
+        <tr>
+            <th>Lecturer Name</th>
+            <th>Submission Date</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Final Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.LecturerName</td>
+                <td>@claim.SubmissionDate.ToShortDateString()</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.FinalPayment</td>
+            </tr>
+        }
+    </tbody>
+</table>

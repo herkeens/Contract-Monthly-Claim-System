@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CMCS_Auto.Models.Claim>
+@{
+    ViewData["Title"] = "Your Claims";
+}
+
+<h2 class="mt-4">Your Claims</h2>
+
+<!-- Submit New Claim button -->
+<div class="mb-3">
+    <a asp-action="SubmitClaim" class="btn btn-primary">Submit New Claim</a>
+</div>
+
+<table class="table table-striped mt-3">
+    <thead class="thead-dark">
+        <tr>
+            <th>Submission Date</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Final Payment</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var claim in Model)
+        {
+            <tr>
+                <td>@claim.SubmissionDate.ToShortDateString()</td>
+                <td>@claim.HoursWorked</td>
+                <td>@claim.HourlyRate</td>
+                <td>@claim.FinalPayment</td>
+                <td>@claim.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

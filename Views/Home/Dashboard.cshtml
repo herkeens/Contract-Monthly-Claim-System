@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    var userRole = ViewBag.UserRole as string;
+    var userName = ViewBag.UserName as string ?? "User";
+}
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Welcome, @userName</h1>
+        <p class="lead">Dashboard - Role: <strong>@userRole</strong></p>
+    </div>
+
+    <div class="row mt-4">
+        @if (userRole == "Lecturer")
+        {
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Submit Claim</h5>
+                        <p class="card-text">Submit your work hours and hourly rate to process claims.</p>
+                        <a href="@Url.Action("SubmitClaim", "Claim")" class="btn btn-primary">Submit Claim</a>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (userRole == "Coordinator" || userRole == "AcademicManager")
+        {
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Review Claims</h5>
+                        <p class="card-text">Approve or reject submitted claims from lecturers.</p>
+                        <a href="@Url.Action("ReviewClaims", "ClaimApproval")" class="btn btn-primary">Review Claims</a>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (userRole == "HR")
+        {
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Approved Claims Report</h5>
+                        <p class="card-text">View reports of all approved claims for processing.</p>
+                        <a href="@Url.Action("ApprovedClaimsReport", "HR")" class="btn btn-primary">View Report</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
